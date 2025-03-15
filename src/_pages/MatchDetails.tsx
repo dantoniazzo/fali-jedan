@@ -256,7 +256,7 @@ const MatchDetails: React.FC = () => {
               )}
             </div>
 
-            <div>
+            <div className="h-60 md:h-72">
               <MapView latitude={match.latitude} longitude={match.longitude} />
             </div>
           </div>

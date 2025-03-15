@@ -4,6 +4,7 @@ import MatchCard from '../components/MatchCard';
 import FilterBar from '../components/FilterBar';
 import AddMatchButton from '../components/AddMatchButton';
 import type { Match, FilterOptions } from '../types';
+import MapView from 'components/Map';
 
 const Home: React.FC = () => {
   const [matches, setMatches] = useState<Match[]>([]);
@@ -72,38 +73,43 @@ const Home: React.FC = () => {
   };
 
   return (
-    <div className="mx-auto px-10 py-6 ">
-      <h1 className="text-2xl font-bold mb-6 text-white">
-        Nadolazeće utakmice
-      </h1>
+    <>
+      <div className="h-96 overflow-hidden">
+        <MapView latitude={45.815399} longitude={15.966568} />
+      </div>
+      <div className="mx-auto px-10 py-6 ">
+        <h1 className="text-2xl font-bold mb-6 text-white mt-4">
+          Nadolazeće utakmice
+        </h1>
 
-      <FilterBar onFilterChange={handleFilterChange} locations={locations} />
+        <FilterBar onFilterChange={handleFilterChange} locations={locations} />
 
-      {loading ? (
-        <div className="flex justify-center py-10">
-          <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-600"></div>
-        </div>
-      ) : error ? (
-        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
-          {error}
-        </div>
-      ) : filteredMatches.length === 0 ? (
-        <div className="text-center py-10 text-gray-500">
-          <p>
-            Nema pronađenih utakmica. Pokušajte prilagoditi filtere ili dodajte
-            novu utakmicu.
-          </p>
-        </div>
-      ) : (
-        <div>
-          {filteredMatches.map((match) => (
-            <MatchCard key={match.id} match={match} />
-          ))}
-        </div>
-      )}
+        {loading ? (
+          <div className="flex justify-center py-10">
+            <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-600"></div>
+          </div>
+        ) : error ? (
+          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+            {error}
+          </div>
+        ) : filteredMatches.length === 0 ? (
+          <div className="text-center py-10 text-gray-500">
+            <p>
+              Nema pronađenih utakmica. Pokušajte prilagoditi filtere ili
+              dodajte novu utakmicu.
+            </p>
+          </div>
+        ) : (
+          <div>
+            {filteredMatches.map((match) => (
+              <MatchCard key={match.id} match={match} />
+            ))}
+          </div>
+        )}
 
-      <AddMatchButton />
-    </div>
+        <AddMatchButton />
+      </div>
+    </>
   );
 };
 
