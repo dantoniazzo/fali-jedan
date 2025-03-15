@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { LogOut, User, Menu, X } from 'lucide-react';
+import { LogOut, User as UserIcon, Menu, X } from 'lucide-react';
 import { supabase } from '../lib/supabase';
+import { User } from '@supabase/supabase-js';
 
 interface NavbarProps {
-  user: any | null;
+  user: User | null;
 }
 
 const Navbar: React.FC<NavbarProps> = ({ user }) => {
@@ -21,45 +22,47 @@ const Navbar: React.FC<NavbarProps> = ({ user }) => {
   };
 
   return (
-    <nav className="bg-white shadow-md">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <nav className="bg-black">
+      <div className="mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           <div className="flex items-center">
             <Link to="/" className="flex-shrink-0 flex items-center">
               <span className="text-3xl mr-2">⚽</span>
-              <span className="font-bold text-xl text-blue-600">Fali Jedan</span>
+              <span className="font-bold text-xl text-blue-500">
+                Fali Jedan
+              </span>
             </Link>
           </div>
-          
+
           {/* Desktop menu */}
           <div className="hidden md:flex items-center">
             {user ? (
               <div className="flex items-center space-x-4">
-                <Link 
-                  to="/profile" 
-                  className="flex items-center text-gray-700 hover:text-blue-600 transition-colors"
+                <Link
+                  to="/profile"
+                  className="flex items-center text-white hover:text-blue-600 transition-colors"
                 >
-                  <User size={20} className="mr-1" />
+                  <UserIcon size={20} className="mr-1" />
                   <span>Profil</span>
                 </Link>
                 <button
                   onClick={handleSignOut}
-                  className="flex items-center text-gray-700 hover:text-blue-600 transition-colors"
+                  className="flex items-center text-white hover:text-blue-600 transition-colors"
                 >
                   <LogOut size={20} className="mr-1" />
                   <span>Odjava</span>
                 </button>
               </div>
             ) : (
-              <Link 
-                to="/login" 
+              <Link
+                to="/login"
                 className="text-gray-700 hover:text-blue-600 transition-colors"
               >
                 Prijava
               </Link>
             )}
           </div>
-          
+
           {/* Mobile menu button */}
           <div className="flex items-center md:hidden">
             <button
@@ -71,7 +74,7 @@ const Navbar: React.FC<NavbarProps> = ({ user }) => {
           </div>
         </div>
       </div>
-      
+
       {/* Mobile menu */}
       {isMenuOpen && (
         <div className="md:hidden bg-white border-t border-gray-200">

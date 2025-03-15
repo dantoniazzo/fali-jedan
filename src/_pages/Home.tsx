@@ -16,12 +16,15 @@ const Home: React.FC = () => {
     const fetchMatches = async () => {
       try {
         setLoading(true);
-        
+
         // Check if Supabase is properly configured
-        if (!import.meta.env.VITE_SUPABASE_URL || !import.meta.env.VITE_SUPABASE_ANON_KEY) {
+        if (
+          !import.meta.env.VITE_SUPABASE_URL ||
+          !import.meta.env.VITE_SUPABASE_ANON_KEY
+        ) {
           throw new Error('Supabase environment variables are missing');
         }
-        
+
         const { data, error } = await supabase
           .from('matches')
           .select('*')
@@ -32,14 +35,18 @@ const Home: React.FC = () => {
         if (data) {
           setMatches(data as Match[]);
           setFilteredMatches(data as Match[]);
-          
+
           // Extract unique locations
-          const uniqueLocations = [...new Set(data.map(match => match.location))];
+          const uniqueLocations = [
+            ...new Set(data.map((match) => match.location)),
+          ];
           setLocations(uniqueLocations);
         }
       } catch (error) {
         console.error('Error fetching matches:', error);
-        setError('Greška pri učitavanju utakmica. Molimo pokušajte ponovno kasnije.');
+        setError(
+          'Greška pri učitavanju utakmica. Molimo pokušajte ponovno kasnije.'
+        );
       } finally {
         setLoading(false);
       }
@@ -52,22 +59,26 @@ const Home: React.FC = () => {
     let filtered = [...matches];
 
     if (filters.sport !== 'all') {
-      filtered = filtered.filter(match => match.sport === filters.sport);
+      filtered = filtered.filter((match) => match.sport === filters.sport);
     }
 
     if (filters.location) {
-      filtered = filtered.filter(match => match.location === filters.location);
+      filtered = filtered.filter(
+        (match) => match.location === filters.location
+      );
     }
 
     setFilteredMatches(filtered);
   };
 
   return (
-    <div className="max-w-3xl mx-auto px-4 py-6">
-      <h1 className="text-2xl font-bold mb-6">Nadolazeće utakmice</h1>
-      
+    <div className="mx-auto px-10 py-6 ">
+      <h1 className="text-2xl font-bold mb-6 text-white">
+        Nadolazeće utakmice
+      </h1>
+
       <FilterBar onFilterChange={handleFilterChange} locations={locations} />
-      
+
       {loading ? (
         <div className="flex justify-center py-10">
           <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-600"></div>
@@ -78,16 +89,19 @@ const Home: React.FC = () => {
         </div>
       ) : filteredMatches.length === 0 ? (
         <div className="text-center py-10 text-gray-500">
-          <p>Nema pronađenih utakmica. Pokušajte prilagoditi filtere ili dodajte novu utakmicu.</p>
+          <p>
+            Nema pronađenih utakmica. Pokušajte prilagoditi filtere ili dodajte
+            novu utakmicu.
+          </p>
         </div>
       ) : (
         <div>
-          {filteredMatches.map(match => (
+          {filteredMatches.map((match) => (
             <MatchCard key={match.id} match={match} />
           ))}
         </div>
       )}
-      
+
       <AddMatchButton />
     </div>
   );

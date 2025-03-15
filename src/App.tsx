@@ -61,7 +61,7 @@ function App() {
 
   return (
     <Router>
-      <div className="min-h-screen bg-gray-100">
+      <div className="min-h-screen bg-black">
         <Navbar user={user} />
         <Routes>
           <Route path="/" element={<Home />} />

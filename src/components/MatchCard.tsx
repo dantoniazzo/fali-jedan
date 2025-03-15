@@ -31,23 +31,25 @@ const MatchCard: React.FC<MatchCardProps> = ({ match }) => {
 
   return (
     <Link to={`/match/${match.id}`}>
-      <div className="bg-white rounded-lg shadow-md p-4 mb-3 hover:shadow-lg transition-shadow duration-200">
+      <div className="bg-gray-900 rounded-lg p-4 mb-3 hover:shadow-md hover:shadow-slate-800 hover:-translate-x-1 transition-shadow duration-200">
         <div className="flex items-center justify-between">
           <div className="flex items-center">
-            <div className="mr-3 text-2xl">
-              {getSportIcon(match.sport)}
-            </div>
+            <div className="mr-3 text-2xl">{getSportIcon(match.sport)}</div>
             <div>
-              <h3 className="font-semibold text-lg">{match.team_a} vs {match.team_b}</h3>
-              <div className="flex items-center text-gray-600 text-sm mt-1">
+              <h3 className="font-semibold text-lg text-white">
+                {match.team_a} vs {match.team_b}
+              </h3>
+              <div className="flex items-center text-gray-400 text-sm mt-1">
                 <MapPin size={16} className="mr-1" />
-                <span>{match.venue}, {match.location}</span>
+                <span>
+                  {match.venue}, {match.location}
+                </span>
               </div>
             </div>
           </div>
           <div className="text-right">
-            <div className="text-sm text-gray-600">{formattedDate}</div>
-            <div className="flex items-center justify-end text-sm font-medium mt-1">
+            <div className="text-sm text-gray-400">{formattedDate}</div>
+            <div className="flex items-center justify-end text-sm text-white font-medium mt-1">
               <Clock size={16} className="mr-1 text-blue-600" />
               <span>{formattedTime}</span>
             </div>

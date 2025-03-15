@@ -12,17 +12,19 @@ const Login: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isSignUp, setIsSignUp] = useState(false);
-  
+
   const redirectTo = location.state?.redirectTo || '/';
 
   useEffect(() => {
     const checkUser = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
       if (session?.user) {
         navigate(redirectTo);
       }
     };
-    
+
     checkUser();
   }, [navigate, redirectTo]);
 
@@ -30,26 +32,28 @@ const Login: React.FC = () => {
     e.preventDefault();
     setError(null);
     setLoading(true);
-    
+
     try {
       if (isSignUp) {
         if (!fullName.trim()) {
           throw new Error('Molimo unesite svoje ime');
         }
-        
+
         // Sign up with email and password
-        const { data: authData, error: authError } = await supabase.auth.signUp({
-          email,
-          password,
-          options: {
-            data: {
-              full_name: fullName
-            }
+        const { data: authData, error: authError } = await supabase.auth.signUp(
+          {
+            email,
+            password,
+            options: {
+              data: {
+                full_name: fullName,
+              },
+            },
           }
-        });
-        
+        );
+
         if (authError) throw authError;
-        
+
         // In a real app, we would handle email verification here
         // For this demo, we'll just redirect to login
         setIsSignUp(false);
@@ -59,14 +63,17 @@ const Login: React.FC = () => {
           email,
           password,
         });
-        
+
         if (error) throw error;
-        
+
         navigate(redirectTo);
       }
     } catch (error: any) {
       console.error('Authentication error:', error);
-      setError(error.message || 'Autentifikacija nije uspjela. Molimo pokušajte ponovno.');
+      setError(
+        error.message ||
+          'Autentifikacija nije uspjela. Molimo pokušajte ponovno.'
+      );
     } finally {
       setLoading(false);
     }
@@ -80,23 +87,26 @@ const Login: React.FC = () => {
           redirectTo: window.location.origin + redirectTo,
         },
       });
-      
+
       if (error) throw error;
     } catch (error: any) {
       console.error('Google sign in error:', error);
-      setError(error.message || 'Google prijava nije uspjela. Molimo pokušajte ponovno.');
+      setError(
+        error.message ||
+          'Google prijava nije uspjela. Molimo pokušajte ponovno.'
+      );
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8 bg-white p-8 rounded-lg shadow-md">
+    <div className="min-h-screen flex items-center justify-center bg-black py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-md w-full space-y-8 bg-gray-900 p-8 rounded-lg shadow-md">
         <div className="text-center">
-          <h2 className="text-3xl font-extrabold text-gray-900">
+          <h2 className="text-3xl font-extrabold text-white">
             {isSignUp ? 'Kreirajte račun' : 'Prijavite se na svoj račun'}
           </h2>
-          <p className="mt-2 text-sm text-gray-600">
-            {isSignUp ? 'Već imate račun?' : "Nemate račun?"}{' '}
+          <p className="mt-2 text-sm text-white">
+            {isSignUp ? 'Već imate račun?' : 'Nemate račun?'}{' '}
             <button
               onClick={() => setIsSignUp(!isSignUp)}
               className="font-medium text-blue-600 hover:text-blue-500"
@@ -105,13 +115,13 @@ const Login: React.FC = () => {
             </button>
           </p>
         </div>
-        
+
         {error && (
           <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative">
             {error}
           </div>
         )}
-        
+
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           <div className="rounded-md shadow-sm -space-y-px">
             {isSignUp && (
@@ -131,7 +141,7 @@ const Login: React.FC = () => {
                     required={isSignUp}
                     value={fullName}
                     onChange={(e) => setFullName(e.target.value)}
-                    className="appearance-none rounded-none relative block w-full px-3 py-2 pl-10 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
+                    className="bg-black appearance-none rounded-none relative block w-full px-3 py-2 pl-10 border border-gray-300 placeholder-gray-500 text-white rounded-t-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
                     placeholder="Ime i prezime"
                   />
                 </div>
@@ -153,7 +163,9 @@ const Login: React.FC = () => {
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className={`appearance-none rounded-none relative block w-full px-3 py-2 pl-10 border border-gray-300 placeholder-gray-500 text-gray-900 ${isSignUp ? '' : 'rounded-t-md'} focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm`}
+                  className={`bg-black appearance-none rounded-none relative block w-full px-3 py-2 pl-10 border border-gray-300 placeholder-gray-500 text-white ${
+                    isSignUp ? '' : 'rounded-t-md'
+                  } focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm`}
                   placeholder="Email adresa"
                 />
               </div>
@@ -174,7 +186,7 @@ const Login: React.FC = () => {
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="appearance-none rounded-none relative block w-full px-3 py-2 pl-10 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
+                  className="bg-black appearance-none rounded-none relative block w-full px-3 py-2 pl-10 border border-gray-300 placeholder-gray-500 text-white rounded-b-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
                   placeholder="Lozinka"
                 />
               </div>
@@ -188,19 +200,24 @@ const Login: React.FC = () => {
               className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
             >
               <span className="absolute left-0 inset-y-0 flex items-center pl-3">
-                <LogIn size={18} className="text-blue-500 group-hover:text-blue-400" />
+                <LogIn
+                  size={18}
+                  className="text-blue-500 group-hover:text-blue-400"
+                />
               </span>
               {loading ? 'Obrada...' : isSignUp ? 'Registracija' : 'Prijava'}
             </button>
           </div>
-          
+
           <div className="mt-6">
             <div className="relative">
               <div className="absolute inset-0 flex items-center">
                 <div className="w-full border-t border-gray-300"></div>
               </div>
               <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-white text-gray-500">Ili nastavite s</span>
+                <span className="px-2 bg-gray-900 text-white">
+                  Ili nastavite s
+                </span>
               </div>
             </div>
 

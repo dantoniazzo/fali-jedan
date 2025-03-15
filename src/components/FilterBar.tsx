@@ -40,7 +40,7 @@ const FilterBar: React.FC<FilterBarProps> = ({ onFilterChange, locations }) => {
       <div className="flex items-center justify-between">
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="flex items-center text-blue-600 font-medium"
+          className="flex items-center text-blue-500 font-medium"
         >
           <Filter size={18} className="mr-1" />
           Filtriraj utakmice
